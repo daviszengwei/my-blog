@@ -1,0 +1,14 @@
+{
+    "name": "my-blog",
+    "version": "1.0.0",
+    "author": "reco_luan",
+    "scripts": {
+        "docs:dev": "vuepress dev docs",
+        "docs:build": "vuepress build docs",
+        "deploy": "deploy.bat"
+    },
+    "devDependencies": {
+        "vuepress": "^1.5.2",
+        "vuepress-theme-reco": "^1.4.7"
+    }
+}
