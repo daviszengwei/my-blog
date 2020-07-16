@@ -126,3 +126,16 @@ JavaScript对象是通过引用来传递的，我们创建的每个新对象实�
 1. display:none 这个元素就变成了一个不显示的元素，会隐藏掉元素空间；但visibility:hidden 虽然不在浏览器显示出来，但是会保留元素空间，只是不显示而已；
 2. display有很多值，visibility只有两个常用的值：visible，hidden
 
+## sass, less, css的联系和区别
+<code>sass</code>和<code>less</code>都是css扩展，目的都是使css更方便，更强大
+1. <code>sass</code>更复杂，<code>less</code>更简单
+2. 编译环境不同，<code>sass</code>安装时需要ruby环境，sass是在服务器端处理的；而<code>less</code>需要引入less.js来处理less代码输出css到浏览器
+3. 变量符不一样，<code>sass</code>是<code>$</code>, <code>less</code>是<code>@</code>
+4. <code>sass</code>允许使用条件编译，列如if{}else{},for{}等，而<code>less</code>不允许
+
+## cookie, sessionStorage, localStorage的区别
+| 不同点 | 存储大小 | 有效时间 | 数据与服务器交互方式 |
+|-------|:--------:|:---------:|---------:|
+| cookie | <=4M |在设置cookie过期之前一直有效（无论窗口浏览器是否关闭）|正常情况下，cookie数据会自动传到服务器，服务器也可以写cookie到客户端|
+| sessionStorage| 5M | 数据在当前浏览器关闭后删除（sessionStorage与存储数据的顶级窗口或浏览器选项卡具有相同的生命周期） | 不会发送数据到服务器 |
+| localStorage | 5M |持久存储，浏览器关闭后不会丢失除非主动删除（知道web应用程序删除它或用户要求浏览器删除它）|不会发送数据到服务器|
