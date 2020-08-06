@@ -17,7 +17,8 @@ module.exports = {
                 icon: 'reco-message',
                 items: [
                     { text: 'GitHub', link: 'https://github.com/daviszengwei', icon: 'reco-github' },
-                    { text: 'CSDN', link: 'https://blog.csdn.net/qq_39235090', icon: 'reco-csdn' }
+                    { text: 'CSDN', link: 'https://blog.csdn.net/qq_39235090', icon: 'reco-csdn' },
+                    { text: 'Zoomze', link: 'https://zoomze.gitee.io/vuepress-blog/', icon: 'reco-document' },
                 ]
             }
         ],

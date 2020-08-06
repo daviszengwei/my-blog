@@ -1,13 +1,56 @@
 ---
-title: Vue 面试题
+title: Vue 基础
 date: 2020-06-12
 tags:
 - vue
 categories: 
-- vue
+- 基础
 - 面试
 sidebarDepth: 2
 ---
+
+## vue生命周期各阶段发生的事
+
+**beforeCreate:**  
+实例初始化
+
+**created:**  
+已完成：数据观测，事件。  
+接下来：
+1. 判断是否有el选项，没有就停止生命周期，直到vue实例调用vm.$mount(el)；有就继续向下编译；
+2. 再判断有没有template选项，有就编译成render函数，没有就将外部HTML作为模板编译；
+3. 如果在HTML结构中增加一串html，在vue对象中增加template选项，会显示template中的内容，如果隐藏template选项，则会显示HTML的内容，vue中还有一个render函数，它是以createElment作为参数，然后做渲染，我们可以直接嵌入js。
+
+在官方文档上也有这段描述：  
+:::danger
+Vue 选项中的 render 函数若存在，则 Vue 构造函数不会从 template 选项或通过 el 选项指定的挂载元素中提取出的 HTML 模板编译渲染函数。
+:::
+
+:::tip
+所以：编译优先级是：render函数 > template选项 > outer HTML
+::: 
+
+
+**beforeMount:**  
+开始给实例对象vm创建$el，并且替换掉el选项 
+
+**mounted:**  
+这里页面还没有渲染出来，还是{{message}}占位的，还是JavaScript中的虚拟DOM形式存在的，  
+在这之后，页面才显示完成
+
+**beforeUpdate:**  
+数据改变时调用，虚拟DOM更新之前访问现有的DOM；  
+*这个钩子可以监听到data的变化，但是view层没有被重新渲染，view层数据没有变化*
+
+**updated:**  
+虚拟DOM改变之后调用；
+*view层才被重新渲染，数据更新*
+
+**beforeDestroy:**  
+实例销毁前调用，这一步，实例仍然完全可用
+
+**destroyed:**  
+实例销毁后调用，*该钩子被调用后，对应 Vue 实例的所有指令都被解绑，所有的事件监听器被移除，所有的子实例也都被销毁*
 
 ## 对MVVM的理解
 
@@ -17,8 +60,11 @@ sidebarDepth: 2
 **View** 代表UI组件，它负责将数据模型转化成UI展现出来  
 **ViewModel** 监听模型数据的改变和控制视图行为、处理用户交互，简单理解就是一个同步View和Model的对象，连接Model和View。  
 在MVVM架构下，View和Model之间并没有直接的联系，而是通过ViewModel进行交互，Model和ViewModel之间的交互是双向的，因此View数据的变化会同步到Model中，而Model数据的变化也会立即反应到View上。  
-ViewModel 通过双向数据绑定吧View层和Model层连接了起来，而View和Model之间的同步工作完全是自动的，无需人为干涉，因此开发者只需关注业务逻辑，不需要手动操作DOM，不需要关注数据状态的同步问题，复杂的数据状态维护完全由MVVM来统一管理。  
-![alt MVVM]$withBase('/mvvm.png')
+ViewModel 通过双向数据绑定吧View层和Model层连接了起来，而View和Model之间的同步工作完全是自动的，无需人为干涉，因此开发者只需关注业务逻辑，不需要手动操作DOM，不需要关注数据状态的同步问题，复杂的数据状态维护完全由MVVM来统一管理。 
+
+**MVVM(Model-View-ViewModel), 源自于经典的 Model–View–Controller（MVC）模式。MVVM 的出现促进了 GUI 前端开发与后端业务逻辑的分离，极大地提高了前端开发效率。MVVM 的核心是 ViewModel 层，它就像是一个中转站（value converter），负责转换 Model 中的数据对象来让数据变得更容易管理和使用，该层向上与视图层进行双向数据绑定，向下与 Model 层通过接口请求进行数据交互，起呈上启下作用。View 层展现的不是 Model 层的数据，而是 ViewModel 的数据，由 ViewModel 负责与 Model 层交互，这就完全解耦了 View 层和 Model 层，这个解耦是至关重要的，它是前后端分离方案实施的最重要一环。**
+
+![alt MVVM]('/my-vuepress-blog/image.png')
 
 ## 一句话就能回答的面试题  
 1. DOM 渲染在 哪个周期中就已经完成？  

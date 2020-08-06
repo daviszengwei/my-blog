@@ -1,9 +1,9 @@
 ---
-title: 'js技巧'
+title: 'js基础'
 date: 2020-06-29
 tags:
-- JS原型
-- DOM
+- JS基础
+- 基础
 categories: 
 - javascript
 sidebarDepth: 2

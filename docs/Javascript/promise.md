@@ -4,8 +4,9 @@
   tags: 
   - javascript
   categories: 
-  - javascript
   - promise
+  - async
+  - await
   sidebarDepth: 2
 ---
 
@@ -97,3 +98,121 @@
    resolved result
    */
   ```
+
+## async, await, promise
+  async、await、promise三者是es6新增的关键字，async-await是建立在promise机制之上的，并不能取代其地位。
+
+  async：作为一个关键字*放在函数前面*，用于表示函数是一个异步函数，因为async就是异步的异步，异步函数也就是意味着**这个函数的执行不会阻塞后面代码的执行**。
+
+  async基本语法：
+  ```javascript
+  async function func() {
+    ------
+  }
+  func();
+  ```
+  async表示函数异步，定义的函数会返回一个promise对象，可以使用then方法添加回调函数。
+
+  ```javascript
+  async function demo() {
+    return 'hello async!';
+  }
+  console.log(demo());
+  demo().then((data) => {
+    console.log(data);
+  });
+  console.log('first exec')
+  /*
+  若 async 定义的函数有返回值，return 'hello async!';
+  相当于Promise.resolve('hello async!'),没有声明式的 return则相当于执行了Promise.resolve();
+  Promise { 'hello async!' }
+  first exec
+  hello async!
+  */
+  ```
+  如果async内部发生错误，使用throw抛出，catch捕获
+
+  ```javascript
+  async function demo(flag) {
+    if(flag) {
+      return 'hello world!';
+    } else {
+      throw 'happend err!'
+    }
+  }
+  demo(0).then((val) => {
+    console.log(val);
+  }).catch((val) => {
+    console.log(val)
+  });
+  console.log('first exec');
+  /*
+  first exec
+  happend err!
+  */
+  ```
+  await: 是等待的意思，那么它在等待什么呢，它后面跟着什么呢？  
+  其实它后面可以放任何表达式，不过我们更多的是放一个promise对象的表达式。  
+  *注意：* await关键字，**只能放在async函数里面，不能单独使用**。
+
+  ```javascript
+  async function Func() {
+    await Math.random();
+  }
+  Func();
+  /*
+  SyntaxError: await is only valid in async function
+  */
+  ```
+  await后面可以跟任何的js表达式。虽然说await可以等很多类型的东西，但是**它主要的意图是用来等待promise对象的状态被resolved**。  
+  如果await的是promise对象会造成异步函数停止执行那就等待promise的解决；  
+  如果等的是正常的表达式则立即执行。
+
+  ```javascript
+  function demo() {
+    return new Promise((resolve, reject) => {
+      resolve('hello promise!');
+    });
+  }
+  (async function exec() {
+    let res = await demo();
+    console.log(res)
+  })();
+  // hello promise
+  ```
+
+promise:对象用于表示一个异步操作的最终状态（完成或失败），以及该异步操作的结果值。它有三种状态：pending，resolved，rejected
+- 1、 promise从pending状态改为resolved或rejected状态只有一次，一旦变成resolve或rejected之后，这个promise的状态就再也不会改变了。
+- 2、 通过resolve(value)传入的value可以是任何值，null也可以，它会传递给后面的then方法里的function去使用。通过rejected(err)传入的err理论上也是没有限制类型的，但我们一般都会传入一个error，比如reject(new Error('Error'))
+
+**await若等待的是promise就会停止下来**
+
+业务场景：  
+  有三个异步请求需要发送，相互没有关联，只是需要当请求都结束后将界面的loading清除掉即可。
+
+```javascript
+function sleep(second) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resoleve("request done!" + second + Math.random())
+    },second)
+  })
+}
+
+async function bugDemo() {
+  console.log(await sleep(2000));
+  console.log(await sleep(3000));
+  console.log(await sleep(1000));
+  console.log("clear the loading~")
+}
+
+bugDemo()
+console.log("second part")
+/*
+> "second part"
+> "request done! 20000.474574137382767"
+> "request done! 30000.04033940416849768"
+> "request done! 10000.36716999803500894"
+> "clear the loading~"
+*/
+```
